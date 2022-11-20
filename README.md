@@ -1,6 +1,6 @@
 # SRMS-NUB
 
-###STRUCTURES
+### STRUCTURES
 ResultGrade {
 	name
 	minPoint
