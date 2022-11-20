@@ -26,7 +26,7 @@ Course {
 Student {
 	id,
 	name,
-	program,
+	program
 }
 
 StudentCourses {
