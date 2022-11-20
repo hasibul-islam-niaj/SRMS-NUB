@@ -1,0 +1,39 @@
+0, Close Application, 1
+
+1, Grades, 1
+
+2, Programs, 1
+1, Add New Program, 0
+2, Edit Program, 0
+3, Delete Program, 0
+4, List Program, 0
+
+3, Semesters, 1
+1, New Semester, 0
+2, Edit Semester, 0
+3, Delete Semester, 0
+4, List Semester, 0
+
+4, Courses, 1
+1, Add New Course, 0
+2, Edit Course, 0
+3, Delete Course, 0
+4, List Course, 0
+
+5, Students, 1
+1, Enroll Student, 0
+2, Edit Student, 0
+3, Search Student, 0
+4, List Student, 0
+5, Enroll Semester, 0
+6, Enroll Courses, 0
+
+6, Students Courses, 1
+1, Add course to Student, 0
+2, Remove a course for Student, 0
+3, List of Students Courses, 0
+
+7, Results, 1
+1, Result Entry, 0
+2, Edit results, 0
+3, View Results, 0
