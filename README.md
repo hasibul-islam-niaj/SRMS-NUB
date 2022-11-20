@@ -2,40 +2,40 @@
 
 ### STRUCTURES
 ResultGrade {
-	name
-	minPoint
+	name,
+	minPoint,
 	maxPoint
 }
 
 Program {
-	code
+	code,
 	name
 }
 
 Semester {
-	name
+	name,
 }
 
 Course {
-	code
-	name
-	credit
+	code,
+	name,
+	credit,
 	program
 }
 
 Student {
-	id
-	name
-	program
+	id,
+	name,
+	program,
 }
 
 StudentCourses {
-	Semester
+	Semester,
 	Courses[]
 }
 
 Result {
-	Semester
-	Course
+	Semester,
+	Course,
 	Result
 }
