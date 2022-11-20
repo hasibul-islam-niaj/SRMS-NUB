@@ -19,17 +19,28 @@ struct Menu {
     struct Menu *next;
 };
 typedef struct Menu Menu;
-Menu *allMenus;
+Menu *db_menus;
 
 struct ResultGrade {
+    int sequence;
     char name[2];
-    double maxPoint;
-    double minPoint;
+    float point;
+    char description[200];
+    struct ResultGrade *next;
 };
 typedef struct ResultGrade ResultGrade;
+ResultGrade *db_grades;
 /*Structure Definition Section*/
 
 /*Function Definition Section*/
+void welcomeMessage() {
+    printf("\n\tStudent Result Management System\n");
+    printf("\t Northern University Bangladesh\n");
+    for (int i=0; i<39; i++)
+        printf("-");
+    printf("\n");
+}
+
 void underConstruction() {
     printf("System is under Construction.\n");
 }
@@ -49,7 +60,7 @@ FILE *getFile(char fileToRead[]) {
     return file;
 }
 
-void readMenu() {
+void initMenu() {
     FILE *file = getFile("menus.txt");
 
     if (file != NULL) {
@@ -64,8 +75,8 @@ void readMenu() {
             if (isMenu) {
                 if (tempMenu == NULL) {
                     tempMenu = menu;
-                    if (allMenus == NULL)
-                        allMenus = tempMenu;
+                    if (db_menus == NULL)
+                        db_menus = tempMenu;
                 } else {
                     tempMenu->next = menu;
                     tempMenu = tempMenu->next;
@@ -87,17 +98,34 @@ void readMenu() {
     }
 }
 
-void welcomeMessage() {
-    printf("\n\tStudent Result Management System\n");
-    printf("\t Northern University Bangladesh\n\n");
+void initGrades() {
+    FILE *file = getFile("grades.txt");
+    if (file != NULL) {
+        ResultGrade *tempGrade = NULL;
+
+        while (!feof(file)) {
+            ResultGrade *grade = malloc(sizeof(ResultGrade));
+            fscanf(file, "%d, %[^,], %f, %[^\n]s", &grade->sequence, grade->name, &grade->point, grade->description);
+
+            if (db_grades == NULL) {
+                db_grades = grade;
+                tempGrade = grade;
+            }
+            else {
+                tempGrade->next = grade;
+                tempGrade = grade;
+            }
+        }
+    }
 }
 
 void systemInitialization() {
-    readMenu();
+    initMenu();
+    initGrades();
 }
 
 Menu *getByMenuSequence(int menuSequence) {
-    Menu *tempMenu = allMenus;
+    Menu *tempMenu = db_menus;
     while (tempMenu != NULL && tempMenu->sequence != menuSequence)
         tempMenu = tempMenu->next;
 
@@ -114,7 +142,7 @@ SubMenu *getBySubMenuSequence(Menu *menu, int subMenuSequence) {
 
 void showMenus() {
     welcomeMessage();
-    Menu *tempMenu = allMenus;
+    Menu *tempMenu = db_menus;
 
     while (tempMenu != NULL) {
         printf("[%d] for '%s'\n", tempMenu->sequence, tempMenu->name);
@@ -134,13 +162,22 @@ void exitProgram() {
     exit(0);
 }
 
+void viewAllGrades() {
+    ResultGrade *tempGrades = db_grades;
+    printf("Sl. \tLetter Grade \tPoint \tDescription\n");
+    while (tempGrades != NULL){
+        printf("[%d] \t%s \t\t\t\t%.2f \t%s\n", tempGrades->sequence, tempGrades->name, tempGrades->point, tempGrades->description);
+        tempGrades = tempGrades->next;
+    }
+}
+
 void taskSwitch(Menu *menu, SubMenu *subMenu) {
     switch (menu->sequence) {
         case 0:
             exitProgram();
             break;
         case 1:
-            underConstruction();
+            viewAllGrades();
             break;
         case 2:
             underConstruction();
