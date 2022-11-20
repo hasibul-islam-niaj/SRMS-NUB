@@ -6,27 +6,29 @@
 1, Add New Program, 0
 2, Edit Program, 0
 3, Delete Program, 0
-4, List Program, 0
+4, List All Programs, 0
 
 3, Semesters, 1
 1, New Semester, 0
 2, Edit Semester, 0
 3, Delete Semester, 0
-4, List Semester, 0
+4, List All Semesters, 0
 
 4, Courses, 1
 1, Add New Course, 0
 2, Edit Course, 0
 3, Delete Course, 0
-4, List Course, 0
+4, List All Courses, 0
+5, List Courses of Program, 0
 
 5, Students, 1
-1, Enroll Student, 0
+1, Enroll new Student, 0
 2, Edit Student, 0
 3, Search Student, 0
-4, List Student, 0
-5, Enroll Semester, 0
-6, Enroll Courses, 0
+4, List All Student, 0
+5, List All Student of Course, 0
+6, List All Student of Program, 0
+7, Enroll in Semester & Courses, 0
 
 6, Students Courses, 1
 1, Add course to Student, 0

@@ -38,7 +38,7 @@ struct Program {
     struct Program *next;
 };
 typedef struct Program Program;
-Program * db_programs;
+Program *db_programs;
 
 struct Semester {
     int sequence;
@@ -46,22 +46,25 @@ struct Semester {
     struct Semester *next;
 };
 typedef struct Semester Semester;
-Semester * db_semesters;
+Semester *db_semesters;
 
 struct Course {
+    int sequence;
     char code[50];
     char name[100];
     int credit;
     int programSequence;
     struct Course *next;
 };
+typedef struct Course Course;
+Course *db_courses;
 /*Structure Definition Section*/
 
 /*Function Definition Section*/
 void welcomeMessage() {
     printf("\n\tStudent Result Management System\n");
     printf("\t Northern University Bangladesh\n");
-    for (int i=0; i<39; i++)
+    for (int i = 0; i < 39; i++)
         printf("-");
     printf("\n");
 }
@@ -135,8 +138,7 @@ void initGrades() {
             if (db_grades == NULL) {
                 db_grades = grade;
                 tempGrade = grade;
-            }
-            else {
+            } else {
                 tempGrade->next = grade;
                 tempGrade = grade;
             }
@@ -157,8 +159,7 @@ void initPrograms() {
             if (db_programs == NULL) {
                 db_programs = program;
                 tempProgram = program;
-            }
-            else {
+            } else {
                 tempProgram->next = program;
                 tempProgram = program;
             }
@@ -179,10 +180,31 @@ void initSemesters() {
             if (db_semesters == NULL) {
                 db_semesters = semester;
                 tempSemester = semester;
-            }
-            else {
+            } else {
                 tempSemester->next = semester;
                 tempSemester = semester;
+            }
+        }
+    }
+}
+
+void initCourses() {
+    FILE *file = getFile("courses.txt");
+
+    if (file != NULL) {
+        Course *tempCourse = NULL;
+
+        while (!feof(file)) {
+            Course *course = malloc(sizeof(Course));
+            fscanf(file, "%d, %[^,], %[^|]| %d, %d", &course->sequence, course->code, course->name, &course->credit,
+                   &course->programSequence);
+
+            if (db_courses == NULL) {
+                db_courses = course;
+                tempCourse = course;
+            } else {
+                tempCourse->next = course;
+                tempCourse = course;
             }
         }
     }
@@ -193,6 +215,7 @@ void systemInitialization() {
     initGrades();
     initPrograms();
     initSemesters();
+    initCourses();
 }
 
 Menu *getByMenuSequence(int menuSequence) {
@@ -236,8 +259,9 @@ void exitProgram() {
 void viewAllGrades() {
     ResultGrade *tempGrades = db_grades;
     printf("Sl. \tLetter Grade \tPoint \tDescription\n");
-    while (tempGrades != NULL){
-        printf("[%d] \t%s \t\t\t\t%.2f \t%s\n", tempGrades->sequence, tempGrades->name, tempGrades->point, tempGrades->description);
+    while (tempGrades != NULL) {
+        printf("[%d] \t%s \t\t\t\t%.2f \t%s\n", tempGrades->sequence, tempGrades->name, tempGrades->point,
+               tempGrades->description);
         tempGrades = tempGrades->next;
     }
 }
@@ -245,14 +269,16 @@ void viewAllGrades() {
 void viewAllPrograms() {
     Program *tempPrograms = db_programs;
     printf("Sl. \tProgram\n");
-    while (tempPrograms != NULL){
+    while (tempPrograms != NULL) {
         printf("[%d] \t%s\n", tempPrograms->sequence, tempPrograms->name);
         tempPrograms = tempPrograms->next;
     }
 }
 
-void tasksSwitchPrograms(int subMenu) {
-    switch (subMenu) {
+void tasksSwitchPrograms(SubMenu *subMenu) {
+    printf("%s\n", subMenu->name);
+
+    switch (subMenu->sequence) {
         case 1:
             underConstruction();
             break;
@@ -271,14 +297,16 @@ void tasksSwitchPrograms(int subMenu) {
 void viewAllSemesters() {
     Semester *tempSemester = db_semesters;
     printf("Sl. \tSemester\n");
-    while (tempSemester != NULL){
+    while (tempSemester != NULL) {
         printf("[%d] \t%s\n", tempSemester->sequence, tempSemester->name);
         tempSemester = tempSemester->next;
     }
 }
 
-void tasksSwitchSemesters(int subMenu) {
-    switch (subMenu) {
+void tasksSwitchSemesters(SubMenu *subMenu) {
+    printf("%s\n", subMenu->name);
+
+    switch (subMenu->sequence) {
         case 1:
             underConstruction();
             break;
@@ -294,22 +322,89 @@ void tasksSwitchSemesters(int subMenu) {
     }
 }
 
+void viewAllCourses() {
+    Course *tempCourses = db_courses;
+    printf("Sl. \tCode \t\tCredit \tCourse\n");
+
+    while (tempCourses != NULL) {
+        printf("[%d] \t%s \t%d \t\t%s \t\n", tempCourses->sequence, tempCourses->code, tempCourses->credit,
+               tempCourses->name);
+        tempCourses = tempCourses->next;
+    }
+}
+
+void viewAllCoursesFilteredByProgram() {
+    Course *tempCourses = db_courses;
+    viewAllPrograms();
+
+    int programSequence, hasCourses = 0, viewAgain = 0;
+    printf("\nEnter Program Sl. to View Courses: ");
+    scanf("%d", &programSequence);
+
+    printf("\nSl. \tCode \t\tCredit \tCourse\n");
+    while (tempCourses != NULL) {
+        if (tempCourses->programSequence == programSequence) {
+            printf("[%d] \t%s \t%d \t\t%s \t\n", tempCourses->sequence, tempCourses->code, tempCourses->credit,
+                   tempCourses->name);
+            hasCourses = 1;
+        }
+
+        tempCourses = tempCourses->next;
+    }
+
+    if (!hasCourses)
+        printf("**This program has no Courses.\n");
+
+    viewAgainChoices:
+    printf("\nDo you wanna view other programs? [1] for Yes, [0] for No]: ");
+    scanf("%d", &viewAgain);
+
+    if (viewAgain == 1)
+        viewAllCoursesFilteredByProgram();
+    else if (viewAgain != 0)
+        goto viewAgainChoices;
+}
+
+void tasksSwitchCourses(SubMenu *subMenu) {
+    printf("%s\n", subMenu->name);
+
+    switch (subMenu->sequence) {
+        case 1:
+            underConstruction();
+            break;
+        case 2:
+            underConstruction();
+            break;
+        case 3:
+            underConstruction();
+            break;
+        case 4:
+            viewAllCourses();
+            break;
+        case 5:
+            viewAllCoursesFilteredByProgram();
+            break;
+    }
+}
+
 void taskSwitch(Menu *menu, SubMenu *subMenu) {
     switch (menu->sequence) {
         case 0:
+            printf("%s\n", menu->name);
             exitProgram();
             break;
         case 1:
+            printf("%s\n", menu->name);
             viewAllGrades();
             break;
         case 2:
-            tasksSwitchPrograms(subMenu->sequence);
+            tasksSwitchPrograms(subMenu);
             break;
         case 3:
-            tasksSwitchSemesters(subMenu->sequence);
+            tasksSwitchSemesters(subMenu);
             break;
         case 4:
-            underConstruction();
+            tasksSwitchCourses(subMenu);
             break;
         case 5:
             underConstruction();

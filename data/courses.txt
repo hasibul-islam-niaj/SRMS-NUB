@@ -1,0 +1,13 @@
+100,    MATH 1101,  Mathematics I (Differential Calculus & Integral Calculus)|      3,  0
+101,    ENG 1204,   English II (Advanced)|                                          3,  0
+102,    PHY 1302,   Physics II (Electromagnetism, Optics and Modern Physics)|       3,  0
+103,    CSE 1102,   Structured Programming Language|                                3,  0
+104,    CSE 1157,   Structured Programming Language Lab Work|                       1,  0
+105,    MATH 1302,  Mathematics II (Differential Equation & Fourier Analysis)|      2,  0
+106,    CSE 1205,   Electrical Engineering and Circuit Analysis|                    3,  0
+107,    CSE 1259,   Electrical Engineering and Circuit Analysis Lab Work|           1,  0
+108,    CSE 1307,   Object- Oriented Programming I (C++)|                           3,  0
+109,    CSE 1360,   Object-Oriented Programming Lab Work|                           1,  0
+110,    CSE 2111,   Data Structure|                                                 3,  0
+111,    CSE 2162,   Data Structure Lab Work|                                        1,  0
+112,    CSE 1290,   Software Development I (DOS Programming)|                       1,  0
