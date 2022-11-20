@@ -30,6 +30,31 @@ struct ResultGrade {
 };
 typedef struct ResultGrade ResultGrade;
 ResultGrade *db_grades;
+
+struct Program {
+    int sequence;
+    char code[20];
+    char name[100];
+    struct Program *next;
+};
+typedef struct Program Program;
+Program * db_programs;
+
+struct Semester {
+    int sequence;
+    char name[50];
+    struct Semester *next;
+};
+typedef struct Semester Semester;
+Semester * db_semesters;
+
+struct Course {
+    char code[50];
+    char name[100];
+    int credit;
+    int programSequence;
+    struct Course *next;
+};
 /*Structure Definition Section*/
 
 /*Function Definition Section*/
@@ -119,9 +144,55 @@ void initGrades() {
     }
 }
 
+void initPrograms() {
+    FILE *file = getFile("programs.txt");
+
+    if (file != NULL) {
+        Program *tempProgram = NULL;
+
+        while (!feof(file)) {
+            Program *program = malloc(sizeof(Program));
+            fscanf(file, "%d, %[^,], %[^\n]s", &program->sequence, program->code, program->name);
+
+            if (db_programs == NULL) {
+                db_programs = program;
+                tempProgram = program;
+            }
+            else {
+                tempProgram->next = program;
+                tempProgram = program;
+            }
+        }
+    }
+}
+
+void initSemesters() {
+    FILE *file = getFile("semesters.txt");
+
+    if (file != NULL) {
+        Semester *tempSemester = NULL;
+
+        while (!feof(file)) {
+            Semester *semester = malloc(sizeof(Semester));
+            fscanf(file, "%d, %[^\n]s", &semester->sequence, semester->name);
+
+            if (db_semesters == NULL) {
+                db_semesters = semester;
+                tempSemester = semester;
+            }
+            else {
+                tempSemester->next = semester;
+                tempSemester = semester;
+            }
+        }
+    }
+}
+
 void systemInitialization() {
     initMenu();
     initGrades();
+    initPrograms();
+    initSemesters();
 }
 
 Menu *getByMenuSequence(int menuSequence) {
@@ -171,6 +242,58 @@ void viewAllGrades() {
     }
 }
 
+void viewAllPrograms() {
+    Program *tempPrograms = db_programs;
+    printf("Sl. \tProgram\n");
+    while (tempPrograms != NULL){
+        printf("[%d] \t%s\n", tempPrograms->sequence, tempPrograms->name);
+        tempPrograms = tempPrograms->next;
+    }
+}
+
+void tasksSwitchPrograms(int subMenu) {
+    switch (subMenu) {
+        case 1:
+            underConstruction();
+            break;
+        case 2:
+            underConstruction();
+            break;
+        case 3:
+            underConstruction();
+            break;
+        case 4:
+            viewAllPrograms();
+            break;
+    }
+}
+
+void viewAllSemesters() {
+    Semester *tempSemester = db_semesters;
+    printf("Sl. \tSemester\n");
+    while (tempSemester != NULL){
+        printf("[%d] \t%s\n", tempSemester->sequence, tempSemester->name);
+        tempSemester = tempSemester->next;
+    }
+}
+
+void tasksSwitchSemesters(int subMenu) {
+    switch (subMenu) {
+        case 1:
+            underConstruction();
+            break;
+        case 2:
+            underConstruction();
+            break;
+        case 3:
+            underConstruction();
+            break;
+        case 4:
+            viewAllSemesters();
+            break;
+    }
+}
+
 void taskSwitch(Menu *menu, SubMenu *subMenu) {
     switch (menu->sequence) {
         case 0:
@@ -180,10 +303,10 @@ void taskSwitch(Menu *menu, SubMenu *subMenu) {
             viewAllGrades();
             break;
         case 2:
-            underConstruction();
+            tasksSwitchPrograms(subMenu->sequence);
             break;
         case 3:
-            underConstruction();
+            tasksSwitchSemesters(subMenu->sequence);
             break;
         case 4:
             underConstruction();

@@ -1,0 +1,5 @@
+0,  BCSE,   B.Sc. in Computer Science & Engineering
+1,  BEEE,   B.Sc. in Electrical & Electronics Engineering
+2,  BTX,    B.Sc. in Textile Engineering
+3,  BBA,    Bachelor of Business Administration
+4,  MBA,    Masters of Business Administration
