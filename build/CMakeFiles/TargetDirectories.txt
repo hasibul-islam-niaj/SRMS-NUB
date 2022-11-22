@@ -1,0 +1,3 @@
+/workspaces/SRMS-NUB/build/CMakeFiles/rebuild_cache.dir
+/workspaces/SRMS-NUB/build/CMakeFiles/edit_cache.dir
+/workspaces/SRMS-NUB/build/CMakeFiles/SEMS-NUB.dir

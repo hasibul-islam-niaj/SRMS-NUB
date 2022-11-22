@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/workspaces/SRMS-NUB/build",
+  "command": "/usr/bin/gcc   -g   -std=gnu99 -o CMakeFiles/SEMS-NUB.dir/main.c.o   -c /workspaces/SRMS-NUB/main.c",
+  "file": "/workspaces/SRMS-NUB/main.c"
+}
+]
