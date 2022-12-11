@@ -48,19 +48,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/209/bin/cmake/linux/bin/cmake
+CMAKE_COMMAND = /home/bs711/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/209/bin/cmake/linux/bin/cmake -E rm -f
+RM = /home/bs711/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/hasibul/CLionProjects/srms
+CMAKE_SOURCE_DIR = /home/bs711/CLionProjects/srms
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/hasibul/CLionProjects/srms/cmake-build-debug
+CMAKE_BINARY_DIR = /home/bs711/CLionProjects/srms/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /home/hasibul/CLionProjects/srms/cmake-build-debug
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/209/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	/home/bs711/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -78,7 +78,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/snap/clion/209/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/home/bs711/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hasibul/CLionProjects/srms/cmake-build-debug/CMakeFiles /home/hasibul/CLionProjects/srms/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bs711/CLionProjects/srms/cmake-build-debug/CMakeFiles /home/bs711/CLionProjects/srms/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/hasibul/CLionProjects/srms/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bs711/CLionProjects/srms/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named srms
+# Target rules for targets named SEMS-NUB
 
 # Build rule for target.
-srms: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 srms
-.PHONY : srms
+SEMS-NUB: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SEMS-NUB
+.PHONY : SEMS-NUB
 
 # fast build rule for target.
-srms/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srms.dir/build.make CMakeFiles/srms.dir/build
-.PHONY : srms/fast
+SEMS-NUB/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SEMS-NUB.dir/build.make CMakeFiles/SEMS-NUB.dir/build
+.PHONY : SEMS-NUB/fast
 
 main.o: main.c.o
 .PHONY : main.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srms.dir/build.make CMakeFiles/srms.dir/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SEMS-NUB.dir/build.make CMakeFiles/SEMS-NUB.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -142,7 +142,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srms.dir/build.make CMakeFiles/srms.dir/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SEMS-NUB.dir/build.make CMakeFiles/SEMS-NUB.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -150,7 +150,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/srms.dir/build.make CMakeFiles/srms.dir/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SEMS-NUB.dir/build.make CMakeFiles/SEMS-NUB.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... srms"
+	@echo "... SEMS-NUB"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

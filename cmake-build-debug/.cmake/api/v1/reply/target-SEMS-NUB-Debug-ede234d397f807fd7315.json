@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "srms"
+			"path" : "SEMS-NUB"
 		}
 	],
 	"backtrace" : 1,
@@ -56,7 +56,7 @@
 			]
 		}
 	],
-	"id" : "srms::@6890427a1f51a3e7e1df",
+	"id" : "SEMS-NUB::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -66,14 +66,14 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "",
+				"fragment" : "-rdynamic",
 				"role" : "flags"
 			}
 		],
 		"language" : "C"
 	},
-	"name" : "srms",
-	"nameOnDisk" : "srms",
+	"name" : "SEMS-NUB",
+	"nameOnDisk" : "SEMS-NUB",
 	"paths" : 
 	{
 		"build" : ".",

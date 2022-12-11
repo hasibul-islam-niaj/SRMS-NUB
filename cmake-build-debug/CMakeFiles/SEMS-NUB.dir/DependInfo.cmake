@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/bs711/CLionProjects/srms/main.c" "CMakeFiles/srms.dir/main.c.o" "gcc" "CMakeFiles/srms.dir/main.c.o.d"
+  "/home/bs711/CLionProjects/srms/main.c" "CMakeFiles/SEMS-NUB.dir/main.c.o" "gcc" "CMakeFiles/SEMS-NUB.dir/main.c.o.d"
   )
 
 # Targets to which this target links.

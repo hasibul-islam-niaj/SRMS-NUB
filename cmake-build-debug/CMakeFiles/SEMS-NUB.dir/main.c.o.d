@@ -1,4 +1,4 @@
-CMakeFiles/srms.dir/main.c.o: /home/bs711/CLionProjects/srms/main.c \
+CMakeFiles/SEMS-NUB.dir/main.c.o: /home/bs711/CLionProjects/srms/main.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \

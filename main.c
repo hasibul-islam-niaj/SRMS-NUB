@@ -82,15 +82,16 @@ void welcomeMessage()
     printf("\n");
 }
 
-void underConstruction()
-{
-    printf("System is under Construction.\n");
-}
-
 void waitForClick(){
     printf("\nPress any key to continue...");
     getchar();
     getchar();
+}
+
+void underConstruction()
+{
+    printf("System is under Construction.\n");
+    waitForClick();
 }
 
 FILE *getFile(char fileName[])
