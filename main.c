@@ -8,6 +8,7 @@
 #define FILE_PROGRAMS "../data/programs.txt"
 #define FILE_SEMESTERS "../data/semesters.txt"
 #define FILE_STUDENTS "../data/students.txt"
+#define FILE_STUDENTS_COURSES "../data/student_courses.txt"
 
 /*Structure Definition Section*/
 char pathOfFiles[] = "../data/";
@@ -66,12 +67,27 @@ struct Course {
 typedef struct Course Course;
 Course *db_courses;
 
+struct StudentCourse {
+    char studentId[20];
+    char semesterName[50];
+    char year[5];
+    char subjectCode[50];
+
+    Semester *semester;
+    Course *course;
+
+    struct StudentCourse *next;
+};
+typedef struct StudentCourse StudentCourse;
+
 struct Student {
     char id[20];
     char name[50];
     int programSequence;
+
     Program *program;
     struct Student *next;
+    StudentCourse *studentCourse;
 };
 typedef struct Student Student;
 Student *db_students;
@@ -246,8 +262,8 @@ void initStudents() {
                     selectedProgram = selectedProgram->next;
                 }
 
-//                if (selectedProgram == NULL)
-//                    printf("\n Wrong program for student %s - %s\n", student->id, student->name);
+                if (selectedProgram == NULL)
+                    printf("\n Wrong program for student %s - %s\n", student->id, student->name);
             }
 
             student->program = selectedProgram;
@@ -262,6 +278,77 @@ void initStudents() {
     }
 }
 
+void initStudentsCourses() {
+    FILE *file = getFile(FILE_STUDENTS_COURSES);
+
+    if (file != NULL) {
+        Student *selectedStudent = NULL;
+        Semester *selectedSemester = NULL;
+        Course *selectedCourse = NULL;
+
+        while (!feof(file)) {
+            StudentCourse *studentCourse = malloc(sizeof(StudentCourse));
+            int serial;
+            fscanf(file, "%d, %[^,], %[^,], %[^,], %[^\n]s", &serial, studentCourse->studentId,
+                   studentCourse->semesterName, studentCourse->year, studentCourse->subjectCode);
+
+            if (selectedStudent == NULL || strcmp(selectedStudent->id, studentCourse->studentId)) {
+                selectedStudent = db_students;
+                while (selectedStudent != NULL) {
+                    if (!strcmp(selectedStudent->id, studentCourse->studentId))
+                        break;
+                    else
+                        selectedStudent = selectedStudent->next;
+                }
+
+                if (selectedStudent == NULL)
+                    printf("\n No Student with id %s\n", studentCourse->studentId);
+            }
+
+            if (selectedSemester == NULL || strcmp(selectedSemester->name, studentCourse->semesterName)) {
+                selectedSemester = db_semesters;
+                while (selectedSemester != NULL) {
+                    if (!strcmp(selectedSemester->name, studentCourse->semesterName))
+                        break;
+                    else
+                        selectedSemester = selectedSemester->next;
+                }
+
+                if (selectedSemester == NULL)
+                    printf("\n No Semester Found Named %s\n", studentCourse->semesterName);
+            }
+
+            if (selectedCourse == NULL || strcmp(selectedCourse->code, studentCourse->subjectCode)) {
+                selectedCourse = db_courses;
+                while (selectedCourse != NULL) {
+                    if (!strcmp(selectedCourse->code, studentCourse->subjectCode))
+                        break;
+                    else
+                        selectedCourse = selectedCourse->next;
+                }
+
+                if (selectedCourse == NULL)
+                    printf("\n No course found with code %s\n", studentCourse->subjectCode);
+            }
+
+            studentCourse->semester = selectedSemester;
+            studentCourse->course = selectedCourse;
+
+            if (selectedStudent != NULL) {
+                if (selectedStudent->studentCourse == NULL) {
+                    selectedStudent->studentCourse = studentCourse;
+                } else {
+                    StudentCourse *tempStudentCourse = selectedStudent->studentCourse;
+                    while (tempStudentCourse->next != NULL)
+                        tempStudentCourse = tempStudentCourse->next;
+                    tempStudentCourse->next = studentCourse;
+                }
+            } else
+                break;
+        }
+    }
+}
+
 void systemInitialization() {
     initMenu();
     initGrades();
@@ -269,6 +356,7 @@ void systemInitialization() {
     initSemesters();
     initCourses();
     initStudents();
+    initStudentsCourses();
 }
 
 Menu *getByMenuSequence(int menuSequence) {
@@ -449,11 +537,43 @@ void viewAllStudents() {
     printf("ID \t\t\t\tName \t\t\t\t\tProgram\n");
 
     while (tempStudent != NULL) {
-        printf("%s \t%s \t\t\t%s\n", tempStudent->id, tempStudent->name, tempStudent->program->name);
+        printf("%s \t%s \t\t\t%s\n", tempStudent->id, tempStudent->name,
+               tempStudent->program == NULL ? "" : tempStudent->program->name);
         tempStudent = tempStudent->next;
     }
 
     waitForClick();
+}
+
+void viewAllStudentsFilteredByProgram() {
+    Student *tempStudents = db_students;
+    viewAllPrograms();
+
+    int programSequence, viewAgain = 0, hasStudents = 0;
+    printf("\nEnter Program Sl. to View Students: ");
+    scanf("%d", &programSequence);
+
+    printf("ID \t\t\t\tName\n");
+    while (tempStudents != NULL) {
+        if (tempStudents->programSequence == programSequence) {
+            printf("%s \t%s\n", tempStudents->id, tempStudents->name);
+            hasStudents = 1;
+        }
+
+        tempStudents = tempStudents->next;
+    }
+
+    if (!hasStudents)
+        printf("**No students are enrolled in this program.\n");
+
+    viewAgainChoices:
+    printf("\nDo you wanna view other programs? [1] for Yes, [0] for No]: ");
+    scanf("%d", &viewAgain);
+
+    if (viewAgain == 1)
+        viewAllStudentsFilteredByProgram();
+    else if (viewAgain != 0)
+        goto viewAgainChoices;
 }
 
 void tasksSwitchStudents(SubMenu *subMenu) {
@@ -476,10 +596,65 @@ void tasksSwitchStudents(SubMenu *subMenu) {
             underConstruction();
             break;
         case 6:
-            underConstruction();
+            viewAllStudentsFilteredByProgram();
             break;
         case 7:
             underConstruction();
+            break;
+    }
+}
+
+void viewAllCoursesOfStudent() {
+    char id[20];
+    printf("Enter Student ID: ");
+    scanf("%s", id);
+
+    Student *student = db_students;
+    while (student != NULL && strcmp(student->id, id))
+        student = student->next;
+
+    if (student == NULL)
+        printf("No students found with id %s\n", id);
+    else {
+        printf("\nCourses of %s.\n", student->name);
+
+        StudentCourse *tempCourse = student->studentCourse;
+        printf("Semester \t Year \t Credit \t Code \t\t Course\n");
+
+        int i = 1, credit = 0;
+        while (tempCourse != NULL) {
+            printf("%d. %s\t\t %s\t %d \t\t\t %s\t %s\n", i, tempCourse->semesterName, tempCourse->year,
+                   tempCourse->course->credit, tempCourse->course->code, tempCourse->course->name);
+            credit += tempCourse->course->credit;
+            tempCourse = tempCourse->next;
+            i++;
+        }
+        printf("Total Credit: %d\n", credit);
+    }
+
+    int viewAgain = 0;
+    viewAgainChoices:
+    printf("\nDo you wanna view other students? [1] for Yes, [0] for No]: ");
+    scanf("%d", &viewAgain);
+
+    if (viewAgain == 1)
+        viewAllCoursesOfStudent();
+    else if (viewAgain != 0)
+        goto viewAgainChoices;
+}
+
+void tasksSwitchStudentCourses(SubMenu *subMenu) {
+    printf("%s\n", subMenu->name);
+
+    switch (subMenu->sequence) {
+        case 1:
+            underConstruction();
+            break;
+        case 2:
+            underConstruction();
+            break;
+        case 3:
+            viewAllCoursesOfStudent();
             break;
     }
 }
@@ -509,7 +684,7 @@ void taskSwitch(Menu *menu, SubMenu *subMenu) {
             tasksSwitchStudents(subMenu);
             break;
         case 6:
-            underConstruction();
+            tasksSwitchStudentCourses(subMenu);
             break;
         case 7:
             underConstruction();

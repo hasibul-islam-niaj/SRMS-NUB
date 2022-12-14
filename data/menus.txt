@@ -28,9 +28,9 @@
 4, List All Student, 0
 5, List All Student of Course, 0
 6, List All Student of Program, 0
-7, Enroll in Semester & Courses, 0
+7, Enroll in Semester, 0
 
-6, Students Courses, 1
+6, Student Courses, 1
 1, Add course to Student, 0
 2, Remove a course for Student, 0
 3, List of Students Courses, 0
