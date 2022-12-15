@@ -1,3 +1,3 @@
-/home/hasibul/CLionProjects/srms/cmake-build-debug/CMakeFiles/srms.dir
-/home/hasibul/CLionProjects/srms/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/hasibul/CLionProjects/srms/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/bs711/CLionProjects/srms/cmake-build-debug/CMakeFiles/SEMS-NUB.dir
+/home/bs711/CLionProjects/srms/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/bs711/CLionProjects/srms/cmake-build-debug/CMakeFiles/rebuild_cache.dir
