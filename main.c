@@ -72,6 +72,7 @@ struct StudentCourse {
     char semesterName[50];
     char year[5];
     char subjectCode[50];
+    double result;
 
     Semester *semester;
     Course *course;
@@ -289,8 +290,9 @@ void initStudentsCourses() {
         while (!feof(file)) {
             StudentCourse *studentCourse = malloc(sizeof(StudentCourse));
             int serial;
-            fscanf(file, "%d, %[^,], %[^,], %[^,], %[^\n]s", &serial, studentCourse->studentId,
-                   studentCourse->semesterName, studentCourse->year, studentCourse->subjectCode);
+            fscanf(file, "%d, %[^,], %[^,], %[^,], %[^,], %lf", &serial, studentCourse->studentId,
+                   studentCourse->semesterName, studentCourse->year, studentCourse->subjectCode,
+                   &studentCourse->result);
 
             if (selectedStudent == NULL || strcmp(selectedStudent->id, studentCourse->studentId)) {
                 selectedStudent = db_students;
@@ -659,6 +661,72 @@ void tasksSwitchStudentCourses(SubMenu *subMenu) {
     }
 }
 
+void viewResultOfStudent() {
+    char id[20];
+    printf("Enter Student ID: ");
+    scanf("%s", id);
+
+    Student *student = db_students;
+    while (student != NULL && strcmp(student->id, id))
+        student = student->next;
+
+    if (student == NULL)
+        printf("No students found with id %s\n", id);
+    else {
+        printf("\nResult of %s.\n", student->name);
+
+        StudentCourse *tempCourse = student->studentCourse;
+        printf("\nSemester \t Year \t Code \t\t Credit \t GP \t TGP \t\t Course\n");
+
+        int i = 1, credit = 0;
+        double tgp = 0.00;
+
+        while (tempCourse != NULL) {
+            printf("%d. %s\t\t %s\t %s \t\t %d \t\t %.2lf\t %.2lf\t\t %s\n", i, tempCourse->semesterName,
+                   tempCourse->year, tempCourse->course->code, tempCourse->course->credit, tempCourse->result,
+                   tempCourse->course->credit * tempCourse->result, tempCourse->course->name);
+            tgp += (tempCourse->course->credit * tempCourse->result);
+            credit += tempCourse->course->credit;
+            tempCourse = tempCourse->next;
+            i++;
+        }
+
+        if (credit != 0) {
+            printf("\nTotal Credit: %d\n", credit);
+            printf("TGP: %.2lf\n", tgp);
+            printf("CGPA: %.2lf\n", tgp/credit);
+        }
+        else
+            printf("Result not published yet.");
+    }
+
+    int viewAgain = 0;
+    viewAgainChoices:
+    printf("\nDo you wanna view other students? [1] for Yes, [0] for No]: ");
+    scanf("%d", &viewAgain);
+
+    if (viewAgain == 1)
+        viewResultOfStudent();
+    else if (viewAgain != 0)
+        goto viewAgainChoices;
+}
+
+void tasksSwitchResults(SubMenu *subMenu) {
+    printf("%s\n", subMenu->name);
+
+    switch (subMenu->sequence) {
+        case 1:
+            underConstruction();
+            break;
+        case 2:
+            underConstruction();
+            break;
+        case 3:
+            viewResultOfStudent();
+            break;
+    }
+}
+
 void taskSwitch(Menu *menu, SubMenu *subMenu) {
     printf("Menu -> %s\n", menu->name);
 
@@ -687,7 +755,7 @@ void taskSwitch(Menu *menu, SubMenu *subMenu) {
             tasksSwitchStudentCourses(subMenu);
             break;
         case 7:
-            underConstruction();
+            tasksSwitchResults(subMenu);
             break;
     }
 }
